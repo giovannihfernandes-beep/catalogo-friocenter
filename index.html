@@ -221,7 +221,7 @@ footer {
   <!-- CABEÇALHO -->
   <header>
     <div class="brand-row">
-      <img src="https://res.cloudinary.com/umvefw3m/image/upload/v1785958848/WhatsApp_Image_2026-07-20_at_14.50.50__2_-removebg-preview_dbifbj.png" alt="FrioCenter Pescados" style="height:52px;width:auto;object-fit:contain;">
+      <div class="eyebrow">Catálogo &middot; FrioCenter Pescados</div>
     </div>
     <h1>Catálogo de Produtos</h1>
     <p class="subtitle">Consulte o portfólio completo de pescados e frutos do mar. Filtre por categoria ou busque pelo nome ou código do produto.</p>
@@ -258,8 +258,8 @@ footer {
       <span class="modal-cat" id="modalCat"></span>
       <div class="modal-name" id="modalName"></div>
       <div class="modal-actions">
-        <a class="btn-primary" id="modalBtnDl" href="#" target="_blank">⬇ Ver foto completa</a>
-        <button class="btn-secondary" onclick="closeModal()">Fechar</button>
+        <a class="btn-primary" id="modalBtnDl" href="#" target="_blank">⬇ Baixar foto</a>
+        <button class="btn-secondary" onclick="closeModal()" style="padding:12px 16px;font-size:18px;line-height:1;">✕</button>
       </div>
     </div>
   </div>
@@ -316,25 +316,30 @@ const PRODUCTS = [
 function render() {
   const q = (document.getElementById("searchInput").value || "").toLowerCase().trim();
 
+  const grid = document.getElementById("grid");
+  const count = document.getElementById("resultCount");
+
+  // Sem busca: limpa tudo
+  if (!q) {
+    grid.innerHTML = "";
+    count.textContent = "";
+    return;
+  }
+
   const items = PRODUCTS.filter(p =>
-    !q
-    || p.nome.toLowerCase().includes(q)
+    p.nome.toLowerCase().includes(q)
     || p.codigo.includes(q)
-    || p.marca.toLowerCase().includes(q)
   );
 
-  document.getElementById("resultCount").textContent =
-    items.length === PRODUCTS.length
-      ? `${items.length} produtos`
-      : `${items.length} de ${PRODUCTS.length} produtos`;
-
-  const grid = document.getElementById("grid");
+  count.textContent = items.length
+    ? `${items.length} produto${items.length > 1 ? 's' : ''} encontrado${items.length > 1 ? 's' : ''}`
+    : "";
 
   if (!items.length) {
     grid.innerHTML = `
       <div class="empty" style="grid-column:1/-1">
         <span class="empty-icon">🔍</span>
-        Nenhum produto encontrado para "<strong>${q || activeCategory}</strong>".
+        Nenhum produto encontrado para "<strong>${q}</strong>".
       </div>`;
     return;
   }
@@ -346,12 +351,10 @@ function render() {
           ? `<img src="${p.imagem}" alt="${p.nome}" loading="lazy">`
           : `<div class="no-img"><span>📷</span>Sem foto disponível</div>`
         }
-
       </div>
       <div class="card-body">
         <div class="card-meta">
           <span class="card-code">#${p.codigo}</span>
-          <span class="card-marca">${p.marca}</span>
         </div>
         <div class="card-name">${p.nome}</div>
       </div>
