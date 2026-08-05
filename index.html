@@ -385,21 +385,14 @@ function openModal(codigo) {
     btn.style.pointerEvents = "auto";
     btn.onclick = (e) => {
       e.preventDefault();
-      const fname = p.codigo + "_" + p.nome.replace(/[^a-zA-Z0-9]/g,"_").slice(0,40) + ".jpg";
-      fetch(p.imagem)
-        .then(r => r.blob())
-        .then(blob => {
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = fname;
-          a.click();
-          URL.revokeObjectURL(url);
-        })
-        .catch(() => {
-          // fallback: abre em nova aba
-          window.open(p.imagem, "_blank");
-        });
+      // fl_attachment força o Cloudinary a servir como download
+      const dlUrl = p.imagem.replace("/upload/", "/upload/fl_attachment/");
+      const a = document.createElement("a");
+      a.href = dlUrl;
+      a.download = p.codigo + ".jpg";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     };
   } else {
     btn.style.opacity = "0.35";
