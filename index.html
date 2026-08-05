@@ -381,13 +381,30 @@ function openModal(codigo) {
 
   const btn = document.getElementById("modalBtnDl");
   if (p.imagem) {
-    btn.href = p.imagem;
     btn.style.opacity = "1";
     btn.style.pointerEvents = "auto";
+    btn.onclick = (e) => {
+      e.preventDefault();
+      const fname = p.codigo + "_" + p.nome.replace(/[^a-zA-Z0-9]/g,"_").slice(0,40) + ".jpg";
+      fetch(p.imagem)
+        .then(r => r.blob())
+        .then(blob => {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = fname;
+          a.click();
+          URL.revokeObjectURL(url);
+        })
+        .catch(() => {
+          // fallback: abre em nova aba
+          window.open(p.imagem, "_blank");
+        });
+    };
   } else {
-    btn.href = "#";
     btn.style.opacity = "0.35";
     btn.style.pointerEvents = "none";
+    btn.onclick = null;
   }
 
   document.getElementById("modalOverlay").classList.add("open");
