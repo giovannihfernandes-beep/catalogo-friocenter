@@ -145,7 +145,7 @@ h1 {
 }
 @keyframes modalIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
 
-.modal-img-wrap { width: 100%; height: 300px; background: #060f1e; overflow: hidden; }
+.modal-img-wrap { width: 100%; min-height: 300px; background: #060f1e; overflow: hidden; }
 .modal-img-wrap img { width: 100%; height: 100%; object-fit: contain; display: block; }
 .modal-img-wrap .no-img { height: 100%; }
 
@@ -172,6 +172,26 @@ h1 {
   font-family: 'IBM Plex Mono', monospace; transition: all .15s;
 }
 .btn-secondary:hover { color: var(--text); border-color: #4a6080; }
+
+/* ── CARROSSEL ── */
+.carousel { position: relative; width: 100%; height: 300px; background: #060f1e; overflow: hidden; }
+.carousel-track { display: flex; height: 100%; transition: transform .3s ease; }
+.carousel-track img { min-width: 100%; height: 100%; object-fit: contain; flex-shrink: 0; display: block; }
+.carousel-btn {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(8,20,40,.75); border: 1px solid var(--line);
+  color: var(--text); width: 36px; height: 36px; border-radius: 50%;
+  font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px); transition: background .15s; z-index: 2;
+}
+.carousel-btn:hover { background: rgba(255,198,7,.2); border-color: var(--gold); }
+.carousel-btn.prev { left: 10px; }
+.carousel-btn.next { right: 10px; }
+.carousel-dots { display: flex; justify-content: center; gap: 6px; padding: 10px 0 4px; }
+.carousel-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--line); cursor: pointer; transition: background .15s; border: none; }
+.carousel-dot.active { background: var(--gold); }
+.carousel-dl-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.carousel-dl-btns .btn-primary { font-size: 12px; padding: 10px 12px; }
 
 /* ── FOOTER ── */
 footer {
@@ -258,7 +278,7 @@ footer {
       <span class="modal-cat" id="modalCat"></span>
       <div class="modal-name" id="modalName"></div>
       <div class="modal-actions">
-        <a class="btn-primary" id="modalBtnDl" href="#" target="_blank">⬇ Baixar foto</a>
+        <a class="btn-primary" id="modalBtnDl" href="#">⬇ Baixar foto</a>
         <button class="btn-secondary" onclick="closeModal()" style="padding:12px 16px;font-size:18px;line-height:1;">✕</button>
       </div>
     </div>
@@ -283,35 +303,45 @@ const PRODUCTS = [
     nome:      "Saithe File C/Pele Cong 1 A 1.5KG CX 10KG",
     categoria: "Filés",
     marca:     "FrioCenter",
-    imagem:    "https://res.cloudinary.com/umvefw3m/image/upload/v1785949704/WhatsApp_Image_2026-08-03_at_16.07.15_yss9oc.jpg"
+    imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1785949704/WhatsApp_Image_2026-08-03_at_16.07.15_yss9oc.jpg"]
   },
   {
     codigo:    "43033",
     nome:      "Lula Aneis Congelado Agranel CX 10KG",
     categoria: "Frutos do Mar",
     marca:     "FrioCenter",
-    imagem:    "https://res.cloudinary.com/umvefw3m/image/upload/v1785955559/WhatsApp_Image_2026-08-03_at_16.05.41_1_ovh14x.jpg"
+    imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1785955559/WhatsApp_Image_2026-08-03_at_16.05.41_1_ovh14x.jpg"]
   },
   {
     codigo:    "61314",
     nome:      "Bacalhau Dessal Lombo Sete Mares Cong 12X800G",
     categoria: "Bacalhau",
     marca:     "Se7e Mares",
-    imagem:    "https://res.cloudinary.com/umvefw3m/image/upload/v1785955559/WhatsApp_Image_2026-08-03_at_16.10.19_vzugel.jpg"
+    imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1785955559/WhatsApp_Image_2026-08-03_at_16.10.19_vzugel.jpg"]
   },
   {
     codigo:    "83770",
     nome:      "Pintado Surubim Filé P S Pele Cong",
     categoria: "Filés",
     marca:     "FrioCenter",
-    imagem:    "https://res.cloudinary.com/umvefw3m/image/upload/v1785955559/WhatsApp_Image_2026-08-05_at_10.14.32_w103qw.jpg"
+    imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1785955559/WhatsApp_Image_2026-08-05_at_10.14.32_w103qw.jpg"]
   },
   {
     codigo:    "7267",
     nome:      "Pangas File S Gordura Cong IQF Agr CX10KG",
     categoria: "Filés",
     marca:     "FrioCenter",
-    imagem:    "https://res.cloudinary.com/umvefw3m/image/upload/v1785962597/WhatsApp_Image_2026-08-05_at_17.36.05_yo2igy.jpg"
+    imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1785962597/WhatsApp_Image_2026-08-05_at_17.36.05_yo2igy.jpg"]
+  },
+  {
+    codigo:    "6090905",
+    nome:      "Tambaqui Costela Congelado (Espeto)",
+    categoria: "Peixes",
+    marca:     "FrioCenter",
+    imagens:   [
+      "https://res.cloudinary.com/umvefw3m/image/upload/v1786122331/6090905_TAMBAQUI_COSTELA_CONGELADO_ESPETO_alwwog.png",
+      "https://res.cloudinary.com/umvefw3m/image/upload/v1786122464/6090905_TAMBAQUI_COSTELA_CONGELADO_ESPETO_2_psiej8.png"
+    ]
   }
 ];
 
@@ -354,8 +384,8 @@ function render() {
   grid.innerHTML = items.map(p => `
     <div class="card" onclick="openModal('${p.codigo}')">
       <div class="card-img-wrap">
-        ${p.imagem
-          ? `<img src="${p.imagem}" alt="${p.nome}" loading="lazy">`
+        ${p.imagens && p.imagens.length
+          ? `<img src="${p.imagens[0]}" alt="${p.nome}" loading="lazy">`
           : `<div class="no-img"><span>📷</span>Sem foto disponível</div>`
         }
       </div>
@@ -372,42 +402,100 @@ function render() {
 // ─────────────────────────────────────────────────────────────────────
 // MODAL
 // ─────────────────────────────────────────────────────────────────────
+let carouselIndex = 0;
+let carouselImagens = [];
+
 function openModal(codigo) {
   const p = PRODUCTS.find(x => x.codigo === codigo);
   if (!p) return;
 
-  document.getElementById("modalCode").textContent  = "Código: " + p.codigo;
+  document.getElementById("modalCode").textContent = "Código: " + p.codigo;
   document.getElementById("modalMarca").textContent = p.marca;
   document.getElementById("modalCat").textContent   = p.categoria;
   document.getElementById("modalName").textContent  = p.nome;
 
-  const wrap = document.getElementById("modalImgWrap");
-  wrap.innerHTML = p.imagem
-    ? `<img src="${p.imagem}" alt="${p.nome}">`
-    : `<div class="no-img"><span>📷</span>Sem foto disponível</div>`;
+  carouselImagens = p.imagens || [];
+  carouselIndex   = 0;
 
-  const btn = document.getElementById("modalBtnDl");
-  if (p.imagem) {
-    btn.style.opacity = "1";
-    btn.style.pointerEvents = "auto";
-    btn.onclick = (e) => {
-      e.preventDefault();
-      // fl_attachment força o Cloudinary a servir como download
-      const dlUrl = p.imagem.replace("/upload/", "/upload/fl_attachment/");
-      const a = document.createElement("a");
-      a.href = dlUrl;
-      a.download = p.codigo + ".jpg";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    };
-  } else {
-    btn.style.opacity = "0.35";
-    btn.style.pointerEvents = "none";
-    btn.onclick = null;
+  const wrap = document.getElementById("modalImgWrap");
+
+  if (!carouselImagens.length) {
+    wrap.innerHTML = `<div class="no-img"><span>📷</span>Sem foto disponível</div>`;
+    document.getElementById("modalBtnDl").style.display = "none";
+    document.getElementById("modalOverlay").classList.add("open");
+    return;
   }
 
+  // Carrossel
+  const multi = carouselImagens.length > 1;
+  wrap.innerHTML = `
+    <div class="carousel" id="carousel">
+      <div class="carousel-track" id="carouselTrack">
+        ${carouselImagens.map((url, i) =>
+          `<img src="${url}" alt="${p.nome} - foto ${i+1}" loading="lazy">`
+        ).join("")}
+      </div>
+      ${multi ? `
+        <button class="carousel-btn prev" onclick="slideCarousel(-1)">&#8249;</button>
+        <button class="carousel-btn next" onclick="slideCarousel(1)">&#8250;</button>
+      ` : ""}
+    </div>
+    ${multi ? `
+      <div class="carousel-dots" id="carouselDots">
+        ${carouselImagens.map((_, i) =>
+          `<button class="carousel-dot ${i===0?'active':''}" onclick="goToSlide(${i})"></button>`
+        ).join("")}
+      </div>
+    ` : ""}
+  `;
+
+  // Botões de download individuais
+  const dlWrap = document.getElementById("modalBtnDl");
+  dlWrap.style.display = "flex";
+  dlWrap.outerHTML; // force repaint
+
+  // Reconstruir área de ações
+  const actions = document.querySelector(".modal-actions");
+  actions.innerHTML = `
+    <div class="carousel-dl-btns" id="dlBtns">
+      ${carouselImagens.map((url, i) => `
+        <button class="btn-primary" onclick="downloadFoto('${url}','${p.codigo}',${i+1})">
+          ⬇ Foto ${carouselImagens.length > 1 ? (i+1) : ''}
+        </button>
+      `).join("")}
+    </div>
+    <button class="btn-secondary" onclick="closeModal()" style="padding:12px 16px;font-size:18px;line-height:1;">✕</button>
+  `;
+
   document.getElementById("modalOverlay").classList.add("open");
+}
+
+function slideCarousel(dir) {
+  carouselIndex = (carouselIndex + dir + carouselImagens.length) % carouselImagens.length;
+  updateCarousel();
+}
+
+function goToSlide(i) {
+  carouselIndex = i;
+  updateCarousel();
+}
+
+function updateCarousel() {
+  const track = document.getElementById("carouselTrack");
+  if (track) track.style.transform = `translateX(-${carouselIndex * 100}%)`;
+  document.querySelectorAll(".carousel-dot").forEach((d, i) =>
+    d.classList.toggle("active", i === carouselIndex)
+  );
+}
+
+function downloadFoto(url, codigo, num) {
+  const dlUrl = url.replace("/upload/", "/upload/fl_attachment/");
+  const a = document.createElement("a");
+  a.href = dlUrl;
+  a.download = codigo + (num > 1 ? `_foto${num}` : "") + (url.endsWith(".png") ? ".png" : ".jpg");
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
 
 function closeModal() {
