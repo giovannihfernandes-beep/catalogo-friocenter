@@ -277,7 +277,7 @@ footer {
       </div>
       <span class="modal-cat" id="modalCat"></span>
       <div class="modal-name" id="modalName"></div>
-      <div class="modal-actions">
+      <div class="modal-actions" id="modalActions">
         <a class="btn-primary" id="modalBtnDl" href="#">⬇ Baixar foto</a>
         <button class="btn-secondary" onclick="closeModal()" style="padding:12px 16px;font-size:18px;line-height:1;">✕</button>
       </div>
@@ -485,17 +485,18 @@ function openModal(codigo) {
   carouselImagens = p.imagens || [];
   carouselIndex   = 0;
 
-  const wrap = document.getElementById("modalImgWrap");
+  const wrap    = document.getElementById("modalImgWrap");
+  const actions = document.getElementById("modalActions");
 
   if (!carouselImagens.length) {
-    wrap.innerHTML = `<div class="no-img"><span>📷</span>Sem foto disponível</div>`;
-    document.getElementById("modalBtnDl").style.display = "none";
+    wrap.innerHTML    = `<div class="no-img"><span>📷</span>Sem foto disponível</div>`;
+    actions.innerHTML = `<button class="btn-secondary" onclick="closeModal()" style="padding:12px 16px;font-size:18px;">✕</button>`;
     document.getElementById("modalOverlay").classList.add("open");
     return;
   }
 
-  // Carrossel
   const multi = carouselImagens.length > 1;
+
   wrap.innerHTML = `
     <div class="carousel" id="carousel">
       <div class="carousel-track" id="carouselTrack">
@@ -517,18 +518,11 @@ function openModal(codigo) {
     ` : ""}
   `;
 
-  // Botões de download individuais
-  const dlWrap = document.getElementById("modalBtnDl");
-  dlWrap.style.display = "flex";
-  dlWrap.outerHTML; // force repaint
-
-  // Reconstruir área de ações
-  const actions = document.querySelector(".modal-actions");
   actions.innerHTML = `
-    <div class="carousel-dl-btns" id="dlBtns">
+    <div class="carousel-dl-btns">
       ${carouselImagens.map((url, i) => `
         <button class="btn-primary" onclick="downloadFoto('${url}','${p.codigo}',${i+1})">
-          ⬇ Foto ${carouselImagens.length > 1 ? (i+1) : ''}
+          ⬇ ${multi ? 'Foto '+(i+1) : 'Baixar foto'}
         </button>
       `).join("")}
     </div>
