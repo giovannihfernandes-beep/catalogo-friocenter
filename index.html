@@ -609,6 +609,29 @@ const PRODUCTS = [
 function render() {
   const q = (document.getElementById("searchInput").value || "").toLowerCase().trim();
 
+  // Comando especial: %todos mostra todos os produtos
+  if (q === "%todos") {
+    const all = PRODUCTS;
+    document.getElementById("resultCount").textContent = `${all.length} produtos`;
+    document.getElementById("grid").innerHTML = all.map(p => `
+      <div class="card" onclick="openModal('${p.codigo}')">
+        <div class="card-img-wrap">
+          ${p.imagens && p.imagens.length
+            ? `<img src="${p.imagens[0]}" alt="${p.nome}" loading="lazy">`
+            : `<div class="no-img"><span>📷</span>Sem foto disponível</div>`
+          }
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-code">#${p.codigo}</span>
+          </div>
+          <div class="card-name">${p.nome}</div>
+        </div>
+      </div>
+    `).join("");
+    return;
+  }
+
   const grid = document.getElementById("grid");
   const count = document.getElementById("resultCount");
 
