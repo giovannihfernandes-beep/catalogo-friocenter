@@ -78,6 +78,25 @@ h1 {
 .cat-btn:hover { color: var(--text); border-color: #3a5a8a; }
 .cat-btn.active { background: var(--gold); color: #0A1730; border-color: var(--gold); font-weight: 600; }
 
+/* ── MENU ESPÉCIES ── */
+.species-menu {
+  margin: 0 0 24px;
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.species-btn {
+  font-family: 'IBM Plex Mono', monospace; font-size: 12px;
+  background: var(--surface); border: 1px solid var(--line);
+  color: var(--muted); padding: 8px 16px; border-radius: 20px;
+  cursor: pointer; transition: all .15s; white-space: nowrap;
+}
+.species-btn:hover { color: var(--text); border-color: #3a5a8a; }
+.species-btn.active { background: var(--gold); color: #0A1730; border-color: var(--gold); font-weight: 600; }
+.species-label {
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+  color: var(--muted); text-transform: uppercase; letter-spacing: .08em;
+  width: 100%; margin-bottom: 4px;
+}
+
 /* ── CONTAGEM ── */
 .result-count {
   font-family: 'IBM Plex Mono', monospace; font-size: 12px;
@@ -260,6 +279,9 @@ footer {
     >
   </div>
 
+  <!-- MENU ESPÉCIES -->
+  <div class="species-menu" id="speciesMenu"></div>
+
   <!-- CONTAGEM -->
   <div class="result-count" id="resultCount"></div>
 
@@ -303,49 +325,49 @@ const PRODUCTS = [
   {
     codigo:    "65415",
     nome:      "Saithe File C/Pele Cong 1 A 1.5KG CX 10KG",
-    categoria: "Filés",
+    categoria:   "Saithe",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1785949704/WhatsApp_Image_2026-08-03_at_16.07.15_yss9oc.jpg"]
   },
   {
     codigo:    "43033",
     nome:      "Lula Aneis Congelado Agranel CX 10KG",
-    categoria: "Frutos do Mar",
+    categoria:   "Lula",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1785955559/WhatsApp_Image_2026-08-03_at_16.05.41_1_ovh14x.jpg"]
   },
   {
     codigo:    "7267",
     nome:      "Pangas File S Gordura Cong IQF Agr CX10KG",
-    categoria: "Filés",
+    categoria:   "Pangas",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1785962597/WhatsApp_Image_2026-08-05_at_17.36.05_yo2igy.jpg"]
   },
   {
     codigo:    "11028",
     nome:      "Tilapia File Resfriado CX 5KG",
-    categoria: "Filés",
+    categoria:   "Tilápia",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1789733792/11028_-_TILAPIA_FILE_RESFRIADO_CX_5KG_w549hv.jpg"]
   },
   {
     codigo:    "55149",
     nome:      "Tambaqui Costela Cong (Sem Espinhas) 75G PCT 5KG",
-    categoria: "Peixes",
+    categoria:   "Tambaqui",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1786125435/55149_TAMBAQUI_COSTELA_CONG_SEM_ESPINHAS_75G_PCT_5KG_nspacj.png"]
   },
   {
     codigo:    "11012",
     nome:      "Tilapia File Congelado AGR CX 10KG",
-    categoria: "Filés",
+    categoria:   "Tilápia",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1789733792/11012_-_TILAPIA_FILE_CONGELADO_AGR_CX_10KG_uppgxc.jpg"]
   },
   {
     codigo:    "210",
     nome:      "Pintado Surubim HG G 48 Congelado SC 35KG",
-    categoria: "Peixes",
+    categoria:   "Pintado / Surubim",
     marca:     "FrioCenter",
     imagens:   [
       "https://res.cloudinary.com/umvefw3m/image/upload/v1786136883/210_-_PINTADOSURUBIM_HG_G_48_CONGELADO_SC_35KG_avktkg.jpg",
@@ -355,7 +377,7 @@ const PRODUCTS = [
   {
     codigo:    "4400",
     nome:      "Jau HG P 1-6KG Congelado SC 30KG",
-    categoria: "Peixes",
+    categoria:   "Jaú",
     marca:     "FrioCenter",
     imagens:   [
       "https://res.cloudinary.com/umvefw3m/image/upload/v1786136883/4400_-_JAU_HG_P_1-6KG_CONGELADO_SC_30KG_2_xqil9z.jpg",
@@ -366,7 +388,7 @@ const PRODUCTS = [
   {
     codigo:    "991402",
     nome:      "Jau HG G 6-13KG SC 25KG",
-    categoria: "Peixes",
+    categoria:   "Jaú",
     marca:     "FrioCenter",
     imagens:   [
       "https://res.cloudinary.com/umvefw3m/image/upload/v1786136885/991402_-_JAU_HG_G_6-13KG_SC_25KG_2_ffkbcl.jpg",
@@ -376,98 +398,98 @@ const PRODUCTS = [
   {
     codigo:    "15212",
     nome:      "Filhote P Evisc Ccab Cong SC 25KG",
-    categoria: "Peixes",
+    categoria:   "Filhote",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1788471011/3443_-_FILHOTE_HG_M_24KG_SC_25KG_vddq5n.jpg"]
   },
   {
     codigo:    "631",
     nome:      "Piau Aracu Cviceras Agranel SC 25KG",
-    categoria: "Peixes",
+    categoria:   "Piau / Aracu",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1788471010/631_-_PIAU_ARACU_CVICERAS_AGRANEL_SC_25KG_edr78b.jpg"]
   },
   {
     codigo:    "55004",
     nome:      "Piau Aracu Evisc Cong. AGR SC 25KG",
-    categoria: "Peixes",
+    categoria:   "Piau / Aracu",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1788471010/55004_-_PIAU_ARACU_EVISC_CONG._AGR_SC_25KG_z5cxgx.jpg"]
   },
   {
     codigo:    "77908",
     nome:      "Tucunare Evisc M 0,71KG Congelado SC 25KG",
-    categoria: "Peixes",
+    categoria:   "Tucunaré",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1788471010/77908_-_TUCUNARE_EVISC_M_0_71KG_CONGELADO_SC_25KG_xp40sf.jpg"]
   },
   {
     codigo:    "77909",
     nome:      "Tucunare Evisc P 700G Abaixo Congelado SC25K",
-    categoria: "Peixes",
+    categoria:   "Tucunaré",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1788530240/77909_-_TUCUNARE_EVISC_P_700G_ABAIXO_CONGELADO_SC25K_agtdvw.jpg"]
   },
   {
     codigo:    "77609",
     nome:      "Dourada PP Evisc Ccab Cong SC 25KG",
-    categoria: "Peixes",
+    categoria:   "Dourada",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1788471010/77609_-DOURADA_PP_EVISC_CCAB_CONG_SC_25KG_ximp6m.jpg"]
   },
   {
     codigo:    "77902",
     nome:      "Barbado HG M 1-2 KG Congelado SC 25KG",
-    categoria: "Peixes",
+    categoria:   "Barbado",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1788471010/77902_-_BARBADO_HG_M_1-2_KG_CONGELADO_SC_25KG_c11epm.jpg"]
   },
   {
     codigo:    "77920",
     nome:      "Barbado Evisc Ccab Cong KG",
-    categoria: "Peixes",
+    categoria:   "Barbado",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1788471010/77902_-_BARBADO_HG_M_1-2_KG_CONGELADO_SC_25KG_2_irdhtm.jpg"]
   },
   {
     codigo:    "77610",
     nome:      "Dourada File P Cong CX 20KG",
-    categoria: "Peixes",
+    categoria:   "Dourada",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1788896941/77610_-_DOURADA_FILE_P_CONG_CX_20KG_vtezik.jpg"]
   },
   {
     codigo:    "32",
     nome:      "Dourada Posta Congelado PCT 5KG",
-    categoria: "Peixes",
+    categoria:   "Dourada",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1788983633/32_-_DOURADA_POSTA_CONGELADO_PCT_5KG_nstoyn.jpg"]
   },
   {
     codigo:    "55002",
     nome:      "Filhote HG P 12KG Congelado SC 25KG",
-    categoria: "Peixes",
+    categoria:   "Filhote",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1788983633/55002_-_FILHOTE_HG_P_12KG_CONGELADO_SC_25KG_glmi60.jpg"]
   },
   {
     codigo:    "15259",
     nome:      "Camarao Cinza Desc Coz Cong IQF AGR 61/70 CX 20KG",
-    categoria: "Frutos do Mar",
+    categoria:   "Camarão",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1788986760/15259_-_CAMARAO_CINZA_DESC_COZ_CONG_IQF_AGR_6170_CX_20KG_zhwynn.jpg"]
   },
   {
     codigo:    "99916",
     nome:      "Tilapia Fresca Eviscerada CX 20KG",
-    categoria: "Peixes",
+    categoria:   "Tilápia",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1789047450/99916_-_TILAPIA_FRESCA_EVISCERADA_CX_20KG_sv15s9.jpg"]
   },
   {
     codigo:    "55088",
     nome:      "Tambaqui Banda Sem Esc Sem Esp Cong AGR KG",
-    categoria: "Peixes",
+    categoria:   "Tambaqui",
     marca:     "FrioCenter",
     imagens:   [
       "https://res.cloudinary.com/umvefw3m/image/upload/v1789150191/55088_-_TAMBAQUI_BANDA_SESC_SESP_CONG_AGR_KG_-1_sjs3au.jpg",
@@ -477,7 +499,7 @@ const PRODUCTS = [
   {
     codigo:    "7552",
     nome:      "Piramutaba HG Cong SC 30KG",
-    categoria: "Peixes",
+    categoria:   "Piramutaba",
     marca:     "FrioCenter",
     imagens:   [
       "https://res.cloudinary.com/umvefw3m/image/upload/v1789406968/7552_-_PIRAMUTABA_HG_CONG_SC_30KG_jdc2tw.jpg",
@@ -487,42 +509,42 @@ const PRODUCTS = [
   {
     codigo:    "9806",
     nome:      "Zebra HG M Congelado SC 25KG",
-    categoria: "Peixes",
+    categoria:   "Zebra",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1789406968/9806_-_ZEBRA_HG_M_CONGELADO_SC_25KG_lkvggg.jpg"]
   },
   {
     codigo:    "9807",
     nome:      "Zebra HG P Congelado SC 25KG",
-    categoria: "Peixes",
+    categoria:   "Zebra",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1789406967/9807_-_ZEBRA_HG_P_CONGELADO_SC_25KG_krtk0p.jpg"]
   },
   {
     codigo:    "15215",
     nome:      "Zebra P Evisc C Cabeca Cong SC 25KG",
-    categoria: "Peixes",
+    categoria:   "Zebra",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1789406967/15215_-_ZEBRA_P_EVISC_CCABECA_CONG_SC_25KG_lojgae.jpg"]
   },
   {
     codigo:    "5511",
     nome:      "Pintado / Surubim Evis C Cab 3 A 5KG SC 35K",
-    categoria: "Peixes",
+    categoria:   "Pintado / Surubim",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1789406967/5511_-_PINTADOSURUBIM_EVIS_CCAB_3_A_5KG_SC35K_kzvoi7.jpg"]
   },
   {
     codigo:    "54054",
     nome:      "Mapara File Agranel Congelado CX 20KG",
-    categoria: "Peixes",
+    categoria:   "Mapará",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1789406967/54054_-_MAPARA_FILE_AGRANEL_CONGELADO_CX_20KG_ifxxdp.jpg"]
   },
   {
     codigo:    "65",
     nome:      "Pintado / Surubim HG M 24KG Congelado SC 35KG",
-    categoria: "Peixes",
+    categoria:   "Pintado / Surubim",
     marca:     "FrioCenter",
     imagens:   [
       "https://res.cloudinary.com/umvefw3m/image/upload/v1789406967/65_-_PINTADOSURUBIM_HG_M_24KG_CONGELADO_SC_35KG_itkwgn.jpg",
@@ -532,77 +554,77 @@ const PRODUCTS = [
   {
     codigo:    "4838",
     nome:      "Mandira Evisc C/ Cabeca Cong SC 25KG",
-    categoria: "Peixes",
+    categoria:   "Mandira",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1789503804/4838_-_MANDIRA_EVISC_CCABECA_CONG_SC_25KG_bdy8la.jpg"]
   },
   {
     codigo:    "5246",
     nome:      "Mapara Evisc C/ Cab Cong SC 25KG",
-    categoria: "Peixes",
+    categoria:   "Mapará",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1789503804/5246_-_MAPARA_EVISC_CCAB_CONG_SC_25KG_tfrqx5.jpg"]
   },
   {
     codigo:    "30027",
     nome:      "Sardinha Inteira FrioCenter Cong 8X1KG",
-    categoria: "Peixes",
+    categoria:   "Sardinha",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1789503804/30027_SARDINHA_INTEIRA_FRIOCENTER_CONG_8X1KG_v84lrp.jpg"]
   },
   {
     codigo:    "35",
     nome:      "Arraia File Congelada CX 20 KG",
-    categoria: "Peixes",
+    categoria:   "Arraia",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1789503804/35_-_ARRAIA_FILE_CONGELADA_CX_20_KG_lo49wx.jpg"]
   },
   {
     codigo:    "15263",
     nome:      "Pacu Inteiro Cong CX 20KG",
-    categoria: "Peixes",
+    categoria:   "Pacu",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1789503803/15263_-_PACU_INTEIRO_CONG_CX_20KG_jqxmrm.jpg"]
   },
   {
     codigo:    "2828",
     nome:      "Dourada File G Congelado CX 20KG",
-    categoria: "Peixes",
+    categoria:   "Dourada",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1789503804/2828_-_DOURADA_FILE_G_CONGELADO_CX_20KG_bdj36d.jpg"]
   },
   {
     codigo:    "179",
     nome:      "Tilapia Posta Congelado PCT 5KG",
-    categoria: "Peixes",
+    categoria:   "Tilápia",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1789656167/179_-_TILAPIA_POSTA_CONGELADO_PCT_5KG_mewzus.jpg"]
   },
   {
     codigo:    "180",
     nome:      "Tilapia Posta Congelado 12X700GR PCT",
-    categoria: "Peixes",
+    categoria:   "Tilápia",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1789656167/180_-_TILAPIA_POSTA_CONGELADO_12X700GR_PCT_yvwk6g.jpg"]
   },
   {
     codigo:    "58058",
     nome:      "Pescada Amarela File (G) Cong AGR CX 20KG",
-    categoria: "Peixes",
+    categoria:   "Pescada Amarela",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1789652156/58058_-_PESCADA_AMARELA_FILE_G_CONG_AGR_CX_20KG_u5gihg.jpg"]
   },
   {
     codigo:    "23023",
     nome:      "Pescada Cambucu File Cong AGR CX 20KG",
-    categoria: "Peixes",
+    categoria:   "Pescada Cambucu",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1789652155/23023_-_PESCADA_CAMBUCU_FILE_CONG_AGR_CX_20KG_dgq6xq.jpg"]
   },
   {
     codigo:    "98142",
     nome:      "Morango Cong Embalado 10X1.02KG",
-    categoria: "Outros",
+    categoria:   "Morango",
     marca:     "FrioCenter",
     imagens:   ["https://res.cloudinary.com/umvefw3m/image/upload/v1789733792/98142_-_MORANGO_CONG_EMBALADO_10X1.02KG_zopme6.jpg"]
   }
@@ -620,54 +642,67 @@ function render() {
   if (q === "%todos") {
     const all = PRODUCTS;
     document.getElementById("resultCount").textContent = `${all.length} produtos`;
-    document.getElementById("grid").innerHTML = all.map(p => `
-      <div class="card" onclick="openModal('${p.codigo}')">
-        <div class="card-img-wrap">
-          ${p.imagens && p.imagens.length
-            ? `<img src="${p.imagens[0]}" alt="${p.nome}" loading="lazy">`
-            : `<div class="no-img"><span>📷</span>Sem foto disponível</div>`
-          }
-        </div>
-        <div class="card-body">
-          <div class="card-meta">
-            <span class="card-code">#${p.codigo}</span>
-          </div>
-          <div class="card-name">${p.nome}</div>
-        </div>
-      </div>
-    `).join("");
+    document.getElementById("grid").innerHTML = all.map(p => cardHTML(p)).join("");
     return;
+  }
+
+  // Filtro por espécie
+  let items = activeSpecies
+    ? PRODUCTS.filter(p => p.categoria === activeSpecies)
+    : [];
+
+  // Filtro por busca
+  if (q) {
+    items = PRODUCTS.filter(p =>
+      p.nome.toLowerCase().includes(q) || p.codigo.includes(q)
+    );
   }
 
   const grid = document.getElementById("grid");
   const count = document.getElementById("resultCount");
 
-  // Sem busca: limpa tudo
-  if (!q) {
+  if (!q && !activeSpecies) {
     grid.innerHTML = "";
     count.textContent = "";
     return;
   }
 
-  const items = PRODUCTS.filter(p =>
-    p.nome.toLowerCase().includes(q)
-    || p.codigo.includes(q)
-  );
-
-  count.textContent = items.length
-    ? `${items.length} produto${items.length > 1 ? 's' : ''} encontrado${items.length > 1 ? 's' : ''}`
-    : "";
+  count.textContent = `${items.length} produto${items.length !== 1 ? 's' : ''} encontrado${items.length !== 1 ? 's' : ''}`;
 
   if (!items.length) {
-    grid.innerHTML = `
-      <div class="empty" style="grid-column:1/-1">
-        <span class="empty-icon">🔍</span>
-        Nenhum produto encontrado para "<strong>${q}</strong>".
-      </div>`;
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><span class="empty-icon">🔍</span>Nenhum produto encontrado.</div>`;
     return;
   }
 
-  grid.innerHTML = items.map(p => `
+  grid.innerHTML = items.map(p => cardHTML(p)).join("");
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// MODAL
+// ─────────────────────────────────────────────────────────────────────
+let activeSpecies = null;
+
+function buildSpeciesMenu() {
+  const species = ["Todos", ...new Set(PRODUCTS.map(p => p.categoria).sort())];
+  const el = document.getElementById("speciesMenu");
+  el.innerHTML = `<div class="species-label">Filtrar por espécie / produto</div>` +
+    species.map(s => `
+      <button class="species-btn ${s === (activeSpecies || 'Todos') ? 'active' : ''}"
+        onclick="setSpecies('${s}')">${s}</button>
+    `).join("");
+}
+
+function setSpecies(s) {
+  activeSpecies = s === "Todos" ? null : s;
+  buildSpeciesMenu();
+  document.getElementById("searchInput").value = "";
+  render();
+}
+let carouselImagens = [];
+let carouselIndex = 0;
+
+function cardHTML(p) {
+  return `
     <div class="card" onclick="openModal('${p.codigo}')">
       <div class="card-img-wrap">
         ${p.imagens && p.imagens.length
@@ -681,15 +716,8 @@ function render() {
         </div>
         <div class="card-name">${p.nome}</div>
       </div>
-    </div>
-  `).join("");
+    </div>`;
 }
-
-// ─────────────────────────────────────────────────────────────────────
-// MODAL
-// ─────────────────────────────────────────────────────────────────────
-let carouselIndex = 0;
-let carouselImagens = [];
 
 function openModal(codigo) {
   const p = PRODUCTS.find(x => x.codigo === codigo);
@@ -796,6 +824,7 @@ document.addEventListener("keydown", e => {
 // INIT
 // (Futuramente: fetch('products.json').then(r=>r.json()).then(data => { PRODUCTS = data; init(); }))
 // ─────────────────────────────────────────────────────────────────────
+buildSpeciesMenu();
 render();
 </script>
 </body>
